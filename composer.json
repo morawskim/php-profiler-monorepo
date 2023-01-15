@@ -1,0 +1,21 @@
+{
+    "name": "mmo/php-profiler",
+    "description": "PHP profiler to measure performance of code.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mmo\\PhpProfiler\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Marcin Morawski",
+            "email": "marcin@morawskim.pl"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.2 || ^8.0"
+    }
+}
