@@ -16,7 +16,18 @@ class StdOutWriter implements WriterInterface
 
     private function dumpTree(TreeItem $treeItem, int $depth): void
     {
-        printf("%s%s %dms\n", str_repeat(' ', 2 * $depth), $treeItem->getValue()->getName(), (int) $treeItem->getValue()->getDuration());
+        $metadata = [];
+        foreach ($treeItem->getValue()->getMetadata() as $key => $value) {
+            $metadata[] = sprintf('%s=%s', $key, $value);
+        }
+
+        printf(
+            "%s%s [%s] %dms\n",
+            str_repeat(' ', 2 * $depth),
+            $treeItem->getValue()->getName(),
+            implode(' ', $metadata),
+            (int)$treeItem->getValue()->getDuration()
+        );
         if (count($treeItem->getChildren())) {
             foreach ($treeItem->getChildren() as $child) {
                 $this->dumpTree($child, $depth + 1);
