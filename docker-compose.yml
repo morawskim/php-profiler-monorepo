@@ -1,0 +1,13 @@
+version: '3.4'
+services:
+  cli:
+    image: thecodingmachine/php:7.2-v4-cli
+    command: bash
+    volumes:
+      - ./:/app
+    user: ${MY_UID:-1000}
+    tty: true
+    working_dir: /app
+    environment:
+      PHP_EXTENSIONS: xdebug
+#      COMPOSER_AUTH: '{"github-oauth": {"github.com": "${COMPOSER_GITHUB_OAUTH}"}}'
