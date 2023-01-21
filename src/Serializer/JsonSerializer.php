@@ -2,6 +2,7 @@
 
 namespace Mmo\PhpProfiler\Serializer;
 
+use Mmo\PhpProfiler\Dto\Probe;
 use Mmo\PhpProfiler\Profiler;
 use Mmo\PhpProfiler\TreeItem;
 
@@ -15,6 +16,13 @@ class JsonSerializer implements SerializerInterface
         }
 
         return json_encode($data);
+    }
+
+    public function deserialize(string $serializedString): Probe
+    {
+        $decodedJson = json_decode($serializedString, true);
+
+        return $this->fromArray($decodedJson);
     }
 
     private function serializeTree(TreeItem $treeItem): array
@@ -35,5 +43,20 @@ class JsonSerializer implements SerializerInterface
             ],
             'children' => $children
         ];
+    }
+
+    private function fromArray(array $data): Probe
+    {
+        $obj = new Probe(
+            $data['span']['name'] ?? '',
+            $data['span']['duration'] ?? 0,
+            $data['span']['metadata'] ?? []
+        );
+
+        foreach ($data['children'] ?? [] as $child) {
+            $obj->addChild(static::fromArray($child));
+        }
+
+        return $obj;
     }
 }

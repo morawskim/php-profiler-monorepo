@@ -1,0 +1,40 @@
+<?php
+
+namespace Mmo\PhpProfiler\TextUI\Command;
+
+use Mmo\PhpProfiler\Converter\SQLiteConverter;
+use Mmo\PhpProfiler\Reader\FilePutContentsReader;
+use Mmo\PhpProfiler\Serializer\JsonSerializer;
+use Mmo\PhpProfiler\TextUI\Application;
+
+class ConvertProfileData extends Application
+{
+    protected function validateArguments($argv): void
+    {
+        if (count($argv) < 2) {
+            throw new \BadMethodCallException('Required argument filePath has not been passed');
+        }
+
+        $filePath = $argv[1];
+
+        if (!file_exists($filePath)) {
+            throw new \RuntimeException(sprintf('File "%s" does not exist', $filePath));
+        }
+
+        if (!is_readable($filePath)) {
+            throw new \RuntimeException(sprintf('File "%s" is not readable', $filePath));
+        }
+    }
+
+    protected function doRun($argv): void
+    {
+        $filePath = $argv[1];
+        $reader = new FilePutContentsReader($filePath, new JsonSerializer());
+        $converter = new SQLiteConverter();
+        $sqlQueries = $converter->convert($reader);
+
+        echo SQLiteConverter::getCreateTableSQL();
+        echo PHP_EOL;
+        echo $sqlQueries;
+    }
+}
