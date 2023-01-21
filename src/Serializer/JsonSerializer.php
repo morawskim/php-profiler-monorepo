@@ -21,8 +21,10 @@ class JsonSerializer implements SerializerInterface
     public function deserialize(string $serializedString): Probe
     {
         $decodedJson = json_decode($serializedString, true);
+        $stack = new \SplStack();
+        $stack->push([]);
 
-        return $this->fromArray($decodedJson);
+        return $this->fromArray($decodedJson, $stack);
     }
 
     private function serializeTree(TreeItem $treeItem): array
@@ -45,17 +47,19 @@ class JsonSerializer implements SerializerInterface
         ];
     }
 
-    private function fromArray(array $data): Probe
+    private function fromArray(array $data, \SplStack $stack): Probe
     {
         $obj = new Probe(
             $data['span']['name'] ?? '',
             $data['span']['duration'] ?? 0,
-            $data['span']['metadata'] ?? []
+            array_merge($stack->top(), $data['span']['metadata'] ?? [])
         );
 
+        $stack->push($obj->getMetadata());
         foreach ($data['children'] ?? [] as $child) {
-            $obj->addChild(static::fromArray($child));
+            $obj->addChild(static::fromArray($child, $stack));
         }
+        $stack->pop();
 
         return $obj;
     }
