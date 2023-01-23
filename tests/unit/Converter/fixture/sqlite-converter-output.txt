@@ -1,0 +1,2 @@
+INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES ("abc", 100.000000, 0, "1234567890", json('{"foo":"bar"}'));
+INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES ("zxc", 50.000000, 1, "1234567890", json('{"key":"value"}'));

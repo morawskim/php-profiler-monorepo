@@ -32,4 +32,24 @@ class JsonSerializerTest extends TestCase
         $this->assertCount(1, $decodedJson['children']);
         $this->assertSame('bar', $decodedJson['children'][0]['span']['name']);
     }
+
+    public function testDeserialize(): void
+    {
+        $serializedString = file_get_contents(__DIR__ . '/fixture/profiler.data');
+
+        $sut = new JsonSerializer();
+        $probe = $sut->deserialize($serializedString);
+
+        $this->assertSame('test', $probe->getName());
+        $this->assertEquals(['key' => 'value'], $probe->getMetadata());
+        $this->assertCount(5, $probe->getChildren());
+        $this->assertEqualsWithDelta(3909.7571, $probe->getDuration(), 0.0001);
+
+        // check child and merged metadata
+        $child = $probe->getChildren()[0];
+        $this->assertSame('test1', $child->getName());
+        $this->assertEquals(['key' => 'value', 'foo' => 'bar'], $child->getMetadata());
+        $this->assertCount(0, $child->getChildren());
+        $this->assertEqualsWithDelta(1000.1199, $child->getDuration(), 0.0001);
+    }
 }

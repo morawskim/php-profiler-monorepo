@@ -9,6 +9,16 @@ use Mmo\PhpProfiler\TextUI\Application;
 
 class ConvertProfileData extends Application
 {
+    /**
+     * @var SQLiteConverter
+     */
+    private $converter;
+
+    public function __construct(SQLiteConverter $converter = null)
+    {
+        $this->converter = $converter ?? new SQLiteConverter();
+    }
+
     protected function validateArguments($argv): void
     {
         if (count($argv) < 2) {
@@ -30,8 +40,7 @@ class ConvertProfileData extends Application
     {
         $filePath = $argv[1];
         $reader = new FilePutContentsReader($filePath, new JsonSerializer());
-        $converter = new SQLiteConverter();
-        $sqlQueries = $converter->convert($reader);
+        $sqlQueries = $this->converter->convert($reader);
 
         echo SQLiteConverter::getCreateTableSQL();
         echo PHP_EOL;

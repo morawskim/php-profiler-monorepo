@@ -4,9 +4,24 @@ namespace Mmo\PhpProfiler\Converter;
 
 use Mmo\PhpProfiler\Dto\Probe;
 use Mmo\PhpProfiler\Reader\ReaderInterface;
+use Mmo\PhpProfiler\Converter\CorrelationIdGenerator\CorrelationIdGeneratorInterface;
+use Mmo\PhpProfiler\Converter\CorrelationIdGenerator\RandomGenerator;
 
 class SQLiteConverter implements ConverterInterface
 {
+    /**
+     * @var CorrelationIdGeneratorInterface|null
+     */
+    private $correlationIdGenerator;
+
+    public function __construct(CorrelationIdGeneratorInterface $correlationIdGenerator = null)
+    {
+        $this->correlationIdGenerator = $correlationIdGenerator ?? new RandomGenerator();
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
     public static function getCreateTableSQL(): string
     {
         return <<<EOS
@@ -26,7 +41,7 @@ EOS;
         $sql = '';
 
         foreach ($reader->readProfilerData() as $probe) {
-            $correlationId = bin2hex(random_bytes(16));
+            $correlationId = $this->correlationIdGenerator->getCorrelationId();
             $sql .= $this->processProbe($probe, $correlationId, 0);
         }
 
