@@ -20,6 +20,10 @@
         </whitelist>
     </filter>
 
+    <logging>
+        <log type="coverage-html" target="coverage" lowUpperBound="35" highLowerBound="80"/>
+    </logging>
+
     <php>
     </php>
 
