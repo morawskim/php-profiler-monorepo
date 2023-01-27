@@ -1,6 +1,10 @@
 #!/usr/bin/env php
 <?php
 
+use Mmo\PhpProfiler\Converter\CorrelationIdGenerator\RandomGenerator;
+use Mmo\PhpProfiler\FlameGraph\FilePutContentsWriter;
+use Mmo\PhpProfiler\TextUI\Command\CreateFlameGraph;
+
 $possibleFiles = [__DIR__.'/../../autoload.php', __DIR__.'/../autoload.php', __DIR__.'/vendor/autoload.php'];
 $file = null;
 foreach ($possibleFiles as $possibleFile) {
@@ -17,4 +21,4 @@ if (null === $file) {
 
 require_once $file;
 
-(new \Mmo\PhpProfiler\TextUI\Command\CreateFlameGraphData())->run($argv);
+(new CreateFlameGraph(new FilePutContentsWriter(new RandomGenerator())))->run($argv);

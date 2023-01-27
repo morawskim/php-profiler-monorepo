@@ -2,24 +2,23 @@
 
 namespace Mmo\PhpProfiler\TextUI\Command;
 
-use Mmo\PhpProfiler\Converter\CorrelationIdGenerator\CorrelationIdGeneratorInterface;
-use Mmo\PhpProfiler\Converter\CorrelationIdGenerator\RandomGenerator;
 use Mmo\PhpProfiler\Dto\Probe;
 use Mmo\PhpProfiler\Dto\QueueProbeFrame;
+use Mmo\PhpProfiler\FlameGraph\FlameGraphWriterInterface;
 use Mmo\PhpProfiler\Reader\FilePutContentsReader;
 use Mmo\PhpProfiler\Serializer\JsonSerializer;
 use Mmo\PhpProfiler\TextUI\Application;
 
-class CreateFlameGraphData extends Application
+class CreateFlameGraph extends Application
 {
     /**
-     * @var CorrelationIdGeneratorInterface|null
+     * @var FlameGraphWriterInterface
      */
-    private $correlationIdGenerator;
+    private $flameGraphWriter;
 
-    public function __construct(CorrelationIdGeneratorInterface $correlationIdGenerator = null)
+    public function __construct(FlameGraphWriterInterface $flameGraphWriter)
     {
-        $this->correlationIdGenerator = $correlationIdGenerator ?? new RandomGenerator();
+        $this->flameGraphWriter = $flameGraphWriter;
     }
 
     protected function validateArguments($argv): void
@@ -63,11 +62,7 @@ class CreateFlameGraphData extends Application
             $queue = new \SplQueue();
             $this->buildFlatProbesCollection($probe, $queue, [], []);
             $svg = $this->createSVG($this->convertToFlameGraphInput($queue));
-
-            file_put_contents(
-                sprintf($outputDirectory . DIRECTORY_SEPARATOR . '%s.svg', $this->correlationIdGenerator->getCorrelationId()),
-                $svg
-            );
+            $this->flameGraphWriter->write($svg, $outputDirectory);
         }
     }
 
