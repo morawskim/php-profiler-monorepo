@@ -40,3 +40,11 @@ SELECT *, CAST(ROUND(duration, 0) as INT) duration_ms_int FROM profiler;
 95% PERCENTILE - `=PERCENTILE(A1:A10;0.95)`
 
 MEDIAN - `=MEDIAN(A1:A10)`
+
+## Flame Graph
+
+This repo contains a fantastic external script to generate [flame graph](https://www.brendangregg.com/flamegraphs.html).
+
+`./create-flame-graph /path/to/saved/profiler/data /output/direcotry/for/svg/files`
+
+![flame graph](docs/flame-graph.png)
