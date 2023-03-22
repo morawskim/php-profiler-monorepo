@@ -1,0 +1,12 @@
+{
+    "name": "mmo/php-profiler",
+    "require": {
+        "php": ">=7.2 || ^8.0",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mmo\\PhpProfiler\\": "src/"
+        }
+    }
+}

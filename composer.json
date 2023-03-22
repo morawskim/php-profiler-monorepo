@@ -3,18 +3,25 @@
     "description": "PHP profiler to measure performance of code.",
     "type": "library",
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Mmo\\PhpProfiler\\": "src/"
-        }
-    },
     "authors": [
         {
             "name": "Marcin Morawski",
             "email": "marcin@morawskim.pl"
         }
     ],
-    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.2 || ^8.0",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "symplify/monorepo-builder": "11.2.2.72"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mmo\\PhpProfilerCli\\": "packages/php-profiler-cli/src/",
+            "Mmo\\PhpProfiler\\": "packages/php-profiler/src/"
+        }
+    },
     "bin": [
         "parse-profiler-data"
     ],
@@ -25,11 +32,9 @@
         "optimize-autoloader": true,
         "sort-packages": true
     },
-    "require": {
-        "php": ">=7.2 || ^8.0",
-        "ext-json": "*"
+    "replace": {
+        "mmo/php-profiler": "self.version",
+        "mmo/php-profiler-cli": "self.version"
     },
-    "require-dev": {
-        "phpunit/phpunit": "^8.0"
-    }
+    "minimum-stability": "stable"
 }
