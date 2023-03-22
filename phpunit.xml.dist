@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap = "tests/bootstrap.php"
+<phpunit
          colors                      = "true"
          convertErrorsToExceptions   = "true"
          convertNoticesToExceptions  = "true"
@@ -10,13 +10,13 @@
 
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>tests</directory>
+            <directory suffix=".php">./packages/**/tests/unit/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory suffix=".php">src/</directory>
+            <directory suffix=".php">./packages/**/*</directory>
         </whitelist>
     </filter>
 
