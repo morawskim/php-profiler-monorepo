@@ -1,9 +1,30 @@
+This is monorepo and php-profiler is split into two packages.
+One package `php-profiler` is used to profile PHP code and does not include any external dependencies and support legacy PHP versions (7.2+).
+
+The other package `php-profiler-cli` is used to analyse profiler data created by `php-profiler` package.
+Because analyse process does not run on production env this library requires external dependencies and might require modern PHP version.
+
 ## Analysing saved profiler data
 
 1. Fetch from server your file with serialized profiler data.
-2. Call`parse-profiler-data` to convert data to SQL queries for SQLite - `./parse-profiler-data /path/to/saved/profiler/data | sqlite3 profiler.db`
-3. Open `profiler.db` in `sqlitebrowser` or other client e.g. PHPStorm.
-4. Use SQL to select/filter stored data and export them to CSV/TSV for better analyse in for example LibreOffice Calc.  
+2. Clone this repository and go to directory `./packages/php-profiler-cli` and edit `composer.json` 
+```json
+{
+    "name": "mmo/php-profiler-cli",
+    # ...
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../php-profiler"
+        }
+    ],
+    "minimum-stability": "dev"
+}
+```
+3. Install dependencies - `composer install`. You had to edit `composer.json` because at this moment these packages are not published.
+4. Call`parse-profiler-data` to convert data to SQL queries for SQLite - `./parse-profiler-data /path/to/saved/profiler/data | sqlite3 profiler.db`
+5. Open `profiler.db` in `sqlitebrowser` or other client e.g. PHPStorm.
+6. Use SQL to select/filter stored data and export them to CSV/TSV for better analyse in for example LibreOffice Calc.  
 
 ### Useful SQL queries
 
