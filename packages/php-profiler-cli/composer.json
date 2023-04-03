@@ -1,9 +1,18 @@
 {
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../php-profiler"
+        }
+    ],
     "name": "mmo/php-profiler-cli",
     "require": {
         "php": ">=7.2 || ^8.0",
         "ext-json": "*",
-        "mmo/php-profiler": "*"
+        "mmo/php-profiler": "*@dev",
+        "symfony/config": "^5.4",
+        "symfony/console": "^5.4",
+        "symfony/dependency-injection": "^5.4"
     },
     "autoload": {
         "psr-4": {
