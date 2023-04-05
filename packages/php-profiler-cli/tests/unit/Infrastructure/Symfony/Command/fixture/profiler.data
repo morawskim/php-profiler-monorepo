@@ -1,0 +1,2 @@
+{"span":{"name":"test","duration":3909.7571,"metadata":{"key": "value"}},"children":[{"span":{"name":"test1","duration":1000.1199,"metadata":{"foo": "bar"}},"children":[]}]}
+{"span":{"name":"test","duration":3909.7571,"metadata":{"key": "value"}},"children":[{"span":{"name":"test1","duration":1000.1199,"metadata":{"foo": "bar"}},"children":[]}]}

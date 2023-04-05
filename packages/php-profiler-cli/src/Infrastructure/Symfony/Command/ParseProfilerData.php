@@ -50,9 +50,8 @@ class ParseProfilerData extends Command
         $reader = new FilePutContentsReader($filePath, new JsonSerializer());
         $sqlQueries = $this->converter->convert($reader);
 
-        echo SQLiteConverter::getCreateTableSQL();
-        echo PHP_EOL;
-        echo $sqlQueries;
+        $output->writeln(SQLiteConverter::getCreateTableSQL());
+        $output->write($sqlQueries);
 
         return 0;
     }

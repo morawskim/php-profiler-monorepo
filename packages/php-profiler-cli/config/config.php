@@ -10,7 +10,6 @@ return function(ContainerConfigurator $configurator) {
         ->defaults()
         ->autowire()      // Automatically injects dependencies in your services.
         ->autoconfigure() // Automatically registers your services as commands, event subscribers, etc.
-        ->public()
     ;
 
     $services->instanceof(Command::class)

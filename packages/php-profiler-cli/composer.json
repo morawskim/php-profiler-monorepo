@@ -22,7 +22,8 @@
     },
     "bin": [
         "parse-profiler-data",
-        "create-flame-graph"
+        "create-flame-graph",
+        "php-profiler-cli"
     ],
     "require-dev": {
         "phpunit/phpunit": "^8.0"
