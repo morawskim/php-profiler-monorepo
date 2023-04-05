@@ -2,6 +2,12 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Mmo\PhpProfilerCli\Converter\CorrelationIdGenerator\CorrelationIdGeneratorInterface;
+use Mmo\PhpProfilerCli\Converter\CorrelationIdGenerator\RandomGenerator;
+use Mmo\PhpProfilerCli\FlameGraph\FilePutContentsWriter;
+use Mmo\PhpProfilerCli\FlameGraph\FlameGraphSvgInterface;
+use Mmo\PhpProfilerCli\FlameGraph\FlameGraphWriterInterface;
+use Mmo\PhpProfilerCli\FlameGraph\ProcFlameGraphSvg;
 use Symfony\Component\Console\Command\Command;
 
 return function(ContainerConfigurator $configurator) {
@@ -15,11 +21,15 @@ return function(ContainerConfigurator $configurator) {
     $services->instanceof(Command::class)
         ->tag('app_commands');
 
+    $services->alias(FlameGraphSvgInterface::class, ProcFlameGraphSvg::class);
+    $services->alias(FlameGraphWriterInterface::class, FilePutContentsWriter::class);
+    $services->alias(CorrelationIdGeneratorInterface::class, RandomGenerator::class);
+
     // makes classes in src/ available to be used as services
     // this creates a service per class whose id is the fully-qualified class name
     $services->load('Mmo\PhpProfilerCli\\', '../src/*')
         ->exclude([
             '../src/{DependencyInjection,Entity,Tests,Kernel.php}',
-            '../src/{Converter,Dto,FlameGraph,Reader,TextUI}',
+            '../src/{Dto,Reader,TextUI}',
         ]);
 };

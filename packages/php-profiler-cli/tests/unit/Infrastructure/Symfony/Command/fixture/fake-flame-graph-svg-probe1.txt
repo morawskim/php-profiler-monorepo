@@ -1,0 +1,13 @@
+<fake-svg-image>id;test1 1000
+id;test2 1000
+id;test3 1000
+id;Validate_input_parameters 1
+id;Calling_facade;CreateNextJobId 12
+id;Calling_facade;Add_new_job;create_command 1
+id;Calling_facade;Add_new_job;dispatch_command 19
+id;Calling_facade;Add_new_job 1
+id;Calling_facade;Fetch_page_content;foo 106
+id;Calling_facade;Fetch_page_content 1
+id;Calling_facade;Create_url 771
+id;Calling_facade 1
+</fake-svg-image>
