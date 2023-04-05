@@ -2,6 +2,7 @@
 
 namespace Mmo\PhpProfilerCli\Infrastructure\Symfony\DependencyInjection;
 
+use Composer\InstalledVersions;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,7 +16,7 @@ class AppCompilerPass implements CompilerPassInterface
         $definition = new Definition(Application::class);
         $definition->setPublic(true);
         $definition->addMethodCall('setName', ['mmo/php-profiler-cli']);
-        $definition->addMethodCall('setVersion', ['latest']);
+        $definition->addMethodCall('setVersion', [InstalledVersions::getVersion('mmo/php-profiler-cli') ?? 'unknown']);
         $container->setDefinition(Application::class, $definition);
 
         $definition = $container->getDefinition(Application::class);

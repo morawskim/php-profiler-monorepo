@@ -9,6 +9,7 @@
     "require": {
         "php": ">=7.2 || ^8.0",
         "ext-json": "*",
+        "composer-runtime-api": "^2.0",
         "mmo/php-profiler": "*@dev",
         "symfony/config": "^5.4",
         "symfony/console": "^5.4",
