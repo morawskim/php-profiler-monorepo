@@ -1,0 +1,42 @@
+        SELECT
+            o2.correlation_id,
+            MAX(o2.total) totalMS,
+            MAX(o2.prepare_data) prepare_dataMS,
+MAX(o2.fetch_clients) fetch_clientsMS,
+MAX(o2.order_collect_first_stage_search) order_collect_first_stage_searchMS,
+MAX(o2.first_stage_events_if_found) first_stage_events_if_foundMS,
+MAX(o2.publishing_async_events) publishing_async_eventsMS,
+MAX(o2.searching_orders_stage_2) searching_orders_stage_2MS,
+MAX(o2.searching_orders_stage_3) searching_orders_stage_3MS,
+MAX(o2.stage_3_loop) stage_3_loopMS,
+            ROUND((MAX(o2.prepare_data) / MAX(o2.total)) * 100, 2) prepare_dataPercent,
+ROUND((MAX(o2.fetch_clients) / MAX(o2.total)) * 100, 2) fetch_clientsPercent,
+ROUND((MAX(o2.order_collect_first_stage_search) / MAX(o2.total)) * 100, 2) order_collect_first_stage_searchPercent,
+ROUND((MAX(o2.first_stage_events_if_found) / MAX(o2.total)) * 100, 2) first_stage_events_if_foundPercent,
+ROUND((MAX(o2.publishing_async_events) / MAX(o2.total)) * 100, 2) publishing_async_eventsPercent,
+ROUND((MAX(o2.searching_orders_stage_2) / MAX(o2.total)) * 100, 2) searching_orders_stage_2Percent,
+ROUND((MAX(o2.searching_orders_stage_3) / MAX(o2.total)) * 100, 2) searching_orders_stage_3Percent,
+ROUND((MAX(o2.stage_3_loop) / MAX(o2.total)) * 100, 2) stage_3_loopPercent
+        FROM (
+            SELECT
+                o.correlation_id,
+                o.total,
+                (o.duration / o.total) as share,
+                (SELECT o.duration FROM profiler p WHERE o.correlation_id = p.correlation_id AND o.name = 'Prepare data' ) as 'prepare_data',
+(SELECT o.duration FROM profiler p WHERE o.correlation_id = p.correlation_id AND o.name = 'Fetch clients' ) as 'fetch_clients',
+(SELECT o.duration FROM profiler p WHERE o.correlation_id = p.correlation_id AND o.name = 'Order collect first stage (search)' ) as 'order_collect_first_stage_search',
+(SELECT o.duration FROM profiler p WHERE o.correlation_id = p.correlation_id AND o.name = 'First stage events if found' ) as 'first_stage_events_if_found',
+(SELECT o.duration FROM profiler p WHERE o.correlation_id = p.correlation_id AND o.name = 'Publishing async events' ) as 'publishing_async_events',
+(SELECT o.duration FROM profiler p WHERE o.correlation_id = p.correlation_id AND o.name = 'Searching orders stage 2' ) as 'searching_orders_stage_2',
+(SELECT o.duration FROM profiler p WHERE o.correlation_id = p.correlation_id AND o.name = 'Searching orders stage 3' ) as 'searching_orders_stage_3',
+(SELECT o.duration FROM profiler p WHERE o.correlation_id = p.correlation_id AND o.name = 'Stage 3 loop' ) as 'stage_3_loop'
+            FROM (
+                SELECT p.name,
+                    p.correlation_id,
+                    p.duration,
+                    (SELECT duration FROM profiler WHERE depth = 0 AND correlation_id = p.correlation_id) as total
+                FROM profiler p
+                WHERE p.depth = 1
+            ) o
+        ) o2
+        GROUP BY correlation_id
