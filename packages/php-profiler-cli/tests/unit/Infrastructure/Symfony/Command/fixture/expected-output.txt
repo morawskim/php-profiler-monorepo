@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS profiler (
     depth SMALLINT DEFAULT 0,
     metadata JSON
 );
-INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES ("test", 3909.757100, 0, "1", json('{"key":"value"}'));
-INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES ("test1", 1000.119900, 1, "1", json('{"key":"value","foo":"bar"}'));
-INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES ("test", 3909.757100, 0, "2", json('{"key":"value"}'));
-INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES ("test1", 1000.119900, 1, "2", json('{"key":"value","foo":"bar"}'));
+INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES ('test', 3909.757100, 0, '1', json('{"key":"value"}'));
+INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES ('test1', 1000.119900, 1, '1', json('{"key":"value","foo":"bar"}'));
+INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES ('test', 3909.757100, 0, '2', json('{"key":"value"}'));
+INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES ('test1', 1000.119900, 1, '2', json('{"key":"value","foo":"bar"}'));

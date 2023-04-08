@@ -51,7 +51,7 @@ EOS;
     private function processProbe(Probe $probe, $correlationId, $depth): string
     {
         $sql = sprintf(
-            'INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES ("%s", %f, %d, "%s", json(\'%s\'));',
+            'INSERT INTO `profiler` (name, duration, depth, correlation_id, metadata) VALUES (\'%s\', %f, %d, \'%s\', json(\'%s\'));',
             addslashes($probe->getName()),
             addslashes($probe->getDuration()),
             $depth,
