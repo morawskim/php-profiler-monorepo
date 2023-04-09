@@ -22,7 +22,7 @@ Because analyse process does not run on production env this library requires ext
 }
 ```
 3. Install dependencies - `composer install`. You had to edit `composer.json` because at this moment these packages are not published.
-4. Call`parse-profiler-data` to convert data to SQL queries for SQLite - `./parse-profiler-data /path/to/saved/profiler/data | sqlite3 profiler.db`
+4. Call command `parse-profiler-data` to convert data to SQL queries for SQLite - ` ./php-profiler-cli parse-profiler-data /path/to/saved/profiler/data | sqlite3 profiler.db`
 5. Open `profiler.db` in `sqlitebrowser` or other client e.g. PHPStorm.
 6. Use SQL to select/filter stored data and export them to CSV/TSV for better analyse in for example LibreOffice Calc.  
 
@@ -66,6 +66,15 @@ MEDIAN - `=MEDIAN(A1:A10)`
 
 This repo contains a fantastic external script to generate [flame graph](https://www.brendangregg.com/flamegraphs.html).
 
-`./create-flame-graph /path/to/saved/profiler/data /output/direcotry/for/svg/files`
+`./php-profiler-cli create-flame-graph /path/to/saved/profiler/data /output/direcotry/for/svg/files`
 
 ![flame graph](docs/flame-graph.png)
+
+## SQL matrix
+
+The "sql-matrix" command generates an SQL query that, for each samples with depth=1, represents each sample as a column.
+The share of a given sample in the full execution time is also calculated. 
+
+`./php-profiler-cli sql-matrix /path/to/saved/profiler/data`
+
+![matrix](docs/matrix.png)
