@@ -1,0 +1,70 @@
+name: 'Packages Split'
+
+on:
+  push:
+    branches:
+      - main
+      - sf-command
+    tags:
+      - '*'
+
+env:
+  GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+jobs:
+  packages_split:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # define package to repository map
+        package:
+          -
+            local_path: 'php-profiler'
+            split_repository: 'php-profiler'
+          -
+            local_path: 'php-profiler-cli'
+            split_repository: 'php-profiler-cli'
+
+    steps:
+      -   uses: actions/checkout@v2
+
+      # no tag
+      -
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        uses: "symplify/monorepo-split-github-action@v2.3.0"
+        with:
+          # ↓ split "packages/" directory
+          package_directory: 'packages/${{ matrix.package.local_path }}'
+
+          # ↓ into repository
+          repository_organization: 'morawskim'
+          repository_name: '${{ matrix.package.split_repository }}'
+
+          # [optional, with "github.com" as default]
+          #repository_host: git.private.com:1234
+
+          # ↓ the user signed under the split commit
+          user_name: "github-ci"
+          user_email: "noreply@morawskim.pl"
+
+      # with tag
+      -
+        if: "startsWith(github.ref, 'refs/tags/')"
+        uses: "symplify/monorepo-split-github-action@v2.3.0"
+        with:
+          tag: ${GITHUB_REF#refs/tags/}
+
+          # ↓ split "packages/" directory
+          package_directory: 'packages/${{ matrix.package.local_path }}'
+
+          # ↓ into repository
+          repository_organization: 'morawskim'
+          repository_name: '${{ matrix.package.split_repository }}'
+
+          # [optional, with "github.com" as default]
+          #repository_host: git.private.com:1234
+
+          # ↓ the user signed under the split commit
+          user_name: "github-ci"
+          user_email: "noreply@morawskim.pl"
