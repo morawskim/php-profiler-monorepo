@@ -21,8 +21,6 @@
         }
     },
     "bin": [
-        "parse-profiler-data",
-        "create-flame-graph",
         "php-profiler-cli"
     ],
     "require-dev": {
